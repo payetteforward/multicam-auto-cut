@@ -1,0 +1,75 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# API Keys - NEVER commit these
+*.key
+*_api_key.txt
+api_keys.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Temporary files
+temp/
+*.tmp
+*.temp
+*.log
+
+# Audio files (can be large)
+*.wav
+*.mp3
+*.m4a
+*.flac
+
+# Video files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Transcripts cache
+transcripts/
+*.transcript.json
+
+# Output files
+fcpxml_outputs/
+outputs/
+demo_*.fcpxml
+*_cut.fcpxml
+*_cut.json
+test_output/
+
+# FCPXML exports (user's video projects)
+fcpxml_exports/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Test files
+test_*.fcpxml
+demo_input.fcpxml
+demo_output*.fcpxml
+demo_stats.json
+
+# Backup files
+*.backup
+*.bak
+*.orig

@@ -1,0 +1,32 @@
+# Core dependencies for the Multicam Auto-Cut System
+
+# OpenAI API for Whisper transcription
+openai>=1.0.0
+
+# Anthropic API for transcript editing
+anthropic>=0.18.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# Audio processing
+pydub>=0.25.1
+
+# HTTP requests (for API calls)
+requests>=2.31.0
+
+# Progress bars for long operations
+tqdm>=4.66.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Type hints support
+typing-extensions>=4.8.0
+
+# Logging enhancements
+colorlog>=6.7.0
+
+# Optional: Local Whisper processing (uncomment if needed)
+# whisper>=20231117

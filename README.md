@@ -21,32 +21,65 @@ An intelligent Final Cut Pro workflow automation tool that automatically cuts mu
 
 ## Installation
 
+### From Source
+
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/multicam-auto-cut.git
+git clone https://github.com/payetteforward/multicam-auto-cut.git
 cd multicam-auto-cut
 ```
 
-2. Install dependencies:
+2. Install the package:
 ```bash
-pip install -r requirements.txt
+pip install -e .  # Install in development mode
+# or
+pip install .     # Install normally
 ```
 
-3. Copy `.env.example` to `.env` and add your API keys:
+3. Set up your API keys:
 ```bash
 cp .env.example .env
+# Edit .env and add your API keys:
+# OPENAI_API_KEY=your-openai-api-key
+# ANTHROPIC_API_KEY=your-anthropic-api-key
 ```
 
-Edit `.env` and add:
-- `OPENAI_API_KEY=your-openai-api-key`
-- `ANTHROPIC_API_KEY=your-anthropic-api-key`
+### For Development
+
+```bash
+pip install -e ".[dev]"  # Install with development dependencies
+```
 
 ## Usage
 
-### Basic Usage
+### Command Line Interface
 
 ```bash
-python src/workflow.py "path/to/your/project.fcpxml"
+# Basic usage
+autocut input.fcpxml
+
+# With options
+autocut input.fcpxml --cleaning light --no-edit
+autocut input.fcpxml -o custom_output_dir --verbose
+
+# Get help
+autocut --help
+```
+
+### Python API
+
+```python
+from src import MulticamAutoCutWorkflow
+
+workflow = MulticamAutoCutWorkflow(
+    cleaning_level="moderate",
+    edit_transcript=True
+)
+
+result = workflow.process_multicam_clip(
+    input_fcpxml="path/to/input.fcpxml",
+    output_fcpxml="path/to/output.fcpxml"
+)
 ```
 
 This will:
@@ -78,20 +111,43 @@ Edit `.env` to configure:
 ```
 multicam-auto-cut/
 ├── src/
-│   ├── workflow.py           # Main workflow orchestrator
-│   ├── fcpxml_parser.py      # FCPXML parsing and analysis
-│   ├── audio_extractor.py    # Audio extraction from video files
-│   ├── transcriber.py        # OpenAI Whisper integration
-│   ├── transcript_cleaner.py # Filler word and repetition removal
-│   ├── transcript_editor.py  # Claude AI editing integration
-│   ├── cut_generator.py      # FCPXML cut generation
-│   └── frame_rate_handler.py # Frame-accurate timing
-├── outputs/                  # Generated FCPXML files
-├── transcripts/              # Cached transcripts
-├── temp/                     # Temporary audio files
-├── requirements.txt          # Python dependencies
-├── .env.example             # Environment variable template
-└── README.md                # This file
+│   ├── __init__.py           # Package initialization
+│   ├── cli.py                # Command-line interface
+│   ├── config/               # Configuration management
+│   │   ├── __init__.py
+│   │   └── settings.py       # Application settings
+│   ├── core/                 # Core workflow logic
+│   │   ├── __init__.py
+│   │   └── workflow.py       # Main workflow orchestrator
+│   ├── processors/           # Processing modules
+│   │   ├── __init__.py
+│   │   ├── fcpxml_parser.py  # FCPXML parsing
+│   │   ├── audio_extractor.py # Audio extraction
+│   │   ├── transcriber.py    # OpenAI Whisper integration
+│   │   ├── transcript_cleaner.py # Filler removal
+│   │   ├── transcript_editor.py  # Claude AI editing
+│   │   └── cut_generator.py  # FCPXML generation
+│   └── utils/                # Utility modules
+│       ├── __init__.py
+│       ├── frame_rate_handler.py # Frame-rate handling
+│       ├── fcpxml_validator.py   # FCPXML validation
+│       └── logging_config.py     # Logging setup
+├── tests/                    # Test suite
+│   ├── __init__.py
+│   ├── conftest.py          # Test fixtures
+│   ├── unit/                # Unit tests
+│   └── integration/         # Integration tests
+├── docs/                    # Documentation
+├── outputs/                 # Generated FCPXML files
+├── transcripts/            # Cached transcripts
+├── temp/                   # Temporary files
+├── autocut.py             # Main entry point
+├── setup.py               # Package setup
+├── requirements.txt       # Dependencies
+├── .env.example          # Environment template
+├── .gitignore           # Git ignore rules
+├── LICENSE              # MIT License
+└── README.md           # This file
 ```
 
 ## How It Works

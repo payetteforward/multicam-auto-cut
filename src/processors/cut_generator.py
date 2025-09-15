@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 import logging
 from datetime import datetime, timezone
-from frame_rate_handler import FrameRateHandler, FrameRateInfo
+from ..utils import FrameRateHandler, FrameRateInfo
 
 # Set up logging
 logger = logging.getLogger(__name__)

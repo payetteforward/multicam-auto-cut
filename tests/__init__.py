@@ -1,0 +1,1 @@
+"""Test suite for the Multicam Auto-Cut System."""

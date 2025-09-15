@@ -26,12 +26,14 @@ except ImportError:
     pass  # dotenv not installed, will use system environment variables
 
 # Import our modules
-from fcpxml_parser import FCPXMLParser
-from audio_extractor import AudioExtractor
-from transcriber import Transcriber
-from transcript_cleaner import TranscriptCleaner
-from cut_generator import CutGenerator
-from transcript_editor import TranscriptEditor
+from ..processors import (
+    FCPXMLParser,
+    AudioExtractor,
+    Transcriber,
+    TranscriptCleaner,
+    CutGenerator,
+    TranscriptEditor
+)
 
 # Set up enhanced logging
 try:

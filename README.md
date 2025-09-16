@@ -7,6 +7,7 @@ An intelligent Final Cut Pro workflow automation tool that automatically cuts mu
 - **Automatic Audio Extraction**: Extracts lav mic audio from multicam FCPXML projects
 - **AI Transcription**: Uses OpenAI Whisper API for accurate speech-to-text conversion
 - **Intelligent Editing**: Claude AI removes stutters and false starts while preserving meaning
+- **Performance-Aware Profiles**: Different editing styles for scripted vs rough recordings
 - **Frame-Accurate Cutting**: Generates FCPXML with precise 29.97 Drop Frame alignment
 - **Smart Caching**: Caches transcripts to avoid repeated API calls
 - **Debug Output**: Saves detailed transcript edits with timestamps for review
@@ -58,13 +59,29 @@ pip install -e ".[dev]"  # Install with development dependencies
 # Basic usage
 autocut input.fcpxml
 
-# With options
+# With editing profile (scripted, tutorial, rough, podcast, aggressive)
+autocut input.fcpxml --profile scripted    # Minimal editing for scripted content
+autocut input.fcpxml --profile rough       # More aggressive for rough recordings
+
+# With other options
 autocut input.fcpxml --cleaning light --no-edit
 autocut input.fcpxml -o custom_output_dir --verbose
 
 # Get help
 autocut --help
 ```
+
+### Editing Profiles
+
+Choose the profile that matches your recording style:
+
+| Profile | Best For | Description |
+|---------|----------|-------------|
+| **scripted** | Prepared scripts | Minimal editing, preserves performance and pacing |
+| **tutorial** | Demos/tutorials | Balanced editing, keeps navigation pauses (default) |
+| **rough** | Unscripted recordings | More aggressive, removes redundancy |
+| **podcast** | Conversations | Preserves natural speech patterns |
+| **aggressive** | Very rough recordings | Maximum cutting for conciseness |
 
 ### Python API
 

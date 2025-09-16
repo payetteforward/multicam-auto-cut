@@ -55,6 +55,14 @@ Examples:
     )
 
     parser.add_argument(
+        "--profile",
+        type=str,
+        choices=["scripted", "tutorial", "rough", "podcast", "aggressive"],
+        default="tutorial",
+        help="Editing profile: scripted (minimal), tutorial (balanced), rough (more cuts), podcast (conversational), aggressive (maximum cuts)",
+    )
+
+    parser.add_argument(
         "--no-edit",
         action="store_true",
         help="Skip AI transcript editing with Claude",
@@ -115,6 +123,7 @@ Examples:
             cleaning_level=settings.cleaning_level,
             transcript_cache_dir=str(settings.transcript_cache_dir),
             edit_transcript=settings.edit_transcript,
+            editing_profile=args.profile,
         )
 
         # Determine output path
@@ -137,6 +146,8 @@ Examples:
         print(f"📄 Output: {output_file}")
         print(f"🧹 Cleaning Level: {settings.cleaning_level}")
         print(f"✏️  Edit Transcript: {'Yes' if settings.edit_transcript else 'No'}")
+        if settings.edit_transcript:
+            print(f"📝 Editing Profile: {args.profile}")
         print(f"💾 Use Cache: {'Yes' if settings.use_transcript_cache else 'No'}")
         print()
 

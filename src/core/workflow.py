@@ -66,7 +66,7 @@ class MulticamAutoCutWorkflow:
     Complete workflow orchestrator for the multicam auto-cut system.
     """
 
-    def __init__(self, temp_dir: str = "./temp", cleaning_level: str = 'moderate', transcript_cache_dir: str = "./transcripts", edit_transcript: bool = True):
+    def __init__(self, temp_dir: str = "./temp", cleaning_level: str = 'moderate', transcript_cache_dir: str = "./transcripts", edit_transcript: bool = True, editing_profile: str = "tutorial"):
         """
         Initialize the workflow.
 
@@ -75,6 +75,7 @@ class MulticamAutoCutWorkflow:
             cleaning_level (str): Level of transcript cleaning
             transcript_cache_dir (str): Directory for cached transcripts
             edit_transcript (bool): Whether to use Claude to edit transcripts
+            editing_profile (str): Editing profile to use ("scripted", "tutorial", "rough", "podcast", "aggressive")
         """
         self.temp_dir = Path(temp_dir)
         self.temp_dir.mkdir(parents=True, exist_ok=True)
@@ -92,10 +93,11 @@ class MulticamAutoCutWorkflow:
 
         # Initialize transcript editor if enabled
         self.transcript_editor = None
+        self.editing_profile = editing_profile
         if self.edit_transcript:
             try:
-                self.transcript_editor = TranscriptEditor()
-                logger.info("✅ Transcript editing with Claude enabled")
+                self.transcript_editor = TranscriptEditor(editing_profile=editing_profile)
+                logger.info(f"✅ Transcript editing enabled with '{editing_profile}' profile")
             except ValueError as e:
                 logger.warning(f"Transcript editing disabled: {e}")
                 self.edit_transcript = False

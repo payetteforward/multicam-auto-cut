@@ -7,17 +7,27 @@ import logging
 from typing import List, Dict, Optional
 from pathlib import Path
 from datetime import datetime
+from ..config.editing_profiles import get_profile, EditingProfile
 
 logger = logging.getLogger(__name__)
 
 class TranscriptEditor:
     """Edit transcripts using Claude API"""
 
-    def __init__(self):
-        """Initialize the transcript editor"""
+    def __init__(self, editing_profile: str = "tutorial"):
+        """
+        Initialize the transcript editor.
+
+        Args:
+            editing_profile: Name of the editing profile to use
+                           ("scripted", "tutorial", "rough", "podcast", "aggressive")
+        """
         self.api_key = os.getenv('ANTHROPIC_API_KEY')
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY not found in environment variables")
+
+        self.profile = get_profile(editing_profile)
+        logger.info(f"Using editing profile: {self.profile.name}")
 
     def edit_transcript(self, segments: List[Dict], output_dir: Optional[str] = None) -> List[Dict]:
         """
@@ -40,7 +50,9 @@ class TranscriptEditor:
         logger.info("Sending transcript to Claude for editing...")
 
         try:
-            # Use Claude to edit the transcript with improved prompt
+            # Use Claude to edit the transcript with the selected profile
+            prompt = self.profile.get_prompt(full_text)
+
             message = client.messages.create(
                 model="claude-3-5-sonnet-20241022",
                 max_tokens=8000,
@@ -48,21 +60,7 @@ class TranscriptEditor:
                 messages=[
                     {
                         "role": "user",
-                        "content": f"""You are editing a transcript from a YouTube video. Your task is to clean up the delivery while preserving ALL substantive content.
-
-IMPORTANT RULES:
-1. Keep ALL meaningful words and complete thoughts
-2. Only remove pure filler words like "um", "uh", "like" when they don't add meaning
-3. Fix repeated words (e.g., "the the" → "the")
-4. Keep false starts ONLY if they contain unique information
-5. Preserve the speaker's voice and style
-6. Do NOT remove content just because it's informal or conversational
-7. When in doubt, keep the content
-
-Original transcript:
-{full_text}
-
-Return ONLY the cleaned transcript text. Do not add any commentary or explanation."""
+                        "content": prompt
                     }
                 ]
             )
